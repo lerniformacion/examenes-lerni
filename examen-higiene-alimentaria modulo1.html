@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seguridad e Higiene Alimentaria — Cuestionario de evaluación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #22282A;
+    --paper: #F6F4EE;
+    --paper-dim: #EBE8DF;
+    --line: #D8D3C4;
+    --pine: #1C3A34;
+    --pine-dim: #2C4E46;
+    --gold: #B6842A;
+    --pass: #2F7D4F;
+    --fail: #A6402F;
+    --radius: 6px;
+  }
+
+  * { box-sizing: border-box; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  html, body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Work Sans', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  h1, h2, .display {
+    font-family: 'Space Grotesk', 'Work Sans', sans-serif;
+  }
+
+  a { color: inherit; }
+
+  /* ---------- Cabecera ---------- */
+  .top-band {
+    background: var(--pine);
+    color: var(--paper);
+    padding: 34px 24px 30px;
+  }
+  .top-band-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .top-band h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .top-band .meta {
+    font-size: 0.9rem;
+    color: #B9CBC4;
+    white-space: nowrap;
+  }
+
+  /* ---------- Layout general ---------- */
+  .stage {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 24px 90px;
+    position: relative;
+  }
+
+  .hidden { display: none !important; }
+
+  /* ---------- Pantalla de identificación ---------- */
+  #screen-id .lede {
+    font-size: 1.02rem;
+    color: #4B5254;
+    max-width: 46ch;
+    margin: 0 0 30px;
+  }
+  #screen-id label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  #screen-id input[type="text"] {
+    width: 100%;
+    max-width: 420px;
+    padding: 13px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-family: inherit;
+    background: #fff;
+  }
+  #screen-id input[type="text"]:focus {
+    outline: 2px solid var(--gold);
+    outline-offset: 1px;
+    border-color: var(--gold);
+  }
+  #warning-id {
+    color: var(--fail);
+    font-size: 0.9rem;
+    margin-top: 10px;
+    display: none;
+  }
+  .rules {
+    margin-top: 34px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    font-size: 0.88rem;
+    color: #5B6260;
+  }
+  .rules ul { margin: 8px 0 0; padding-left: 20px; }
+  .rules li { margin-bottom: 4px; }
+
+  /* ---------- Barra de progreso ---------- */
+  .progress-rail {
+    position: sticky;
+    top: 0;
+    background: var(--paper);
+    padding: 14px 0 20px;
+    z-index: 5;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 30px;
+  }
+  .progress-rail .count {
+    font-size: 0.82rem;
+    color: #5B6260;
+    margin-bottom: 10px;
+  }
+  .progress-dots {
+    display: flex;
+    gap: 6px;
+  }
+  .progress-dots .dot {
+    flex: 1;
+    height: 5px;
+    background: var(--paper-dim);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    transition: background .2s ease;
+  }
+  .progress-dots .dot.done { background: var(--pine); border-color: var(--pine); }
+
+  /* ---------- Preguntas ---------- */
+  .question {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 4px 18px;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .question:first-of-type { padding-top: 0; }
+  .question .num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--pine-dim);
+    line-height: 1.1;
+  }
+  .question .enunciado {
+    font-weight: 600;
+    margin: 0 0 14px;
+    line-height: 1.4;
+    padding-top: 2px;
+  }
+  .options {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .options label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    cursor: pointer;
+    background: #fff;
+    font-size: 0.96rem;
+  }
+  .options label:hover { border-color: var(--pine-dim); }
+  .options input { position: absolute; opacity: 0; pointer-events: none; }
+  .options .box {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid #A9A398;
+    border-radius: 3px;
+    margin-top: 1px;
+    position: relative;
+  }
+  .options input:checked + .box {
+    background: var(--pine);
+    border-color: var(--pine);
+  }
+  .options input:checked + .box::after {
+    content: "";
+    position: absolute;
+    left: 6px; top: 2px;
+    width: 5px; height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(40deg);
+  }
+  .options label:has(input:checked) {
+    border-color: var(--pine);
+    background: #EFF3F0;
+  }
+
+  /* ---------- Botones ---------- */
+  button.primary {
+    background: var(--pine);
+    color: #fff;
+    border: none;
+    padding: 14px 26px;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  button.primary:hover { background: var(--pine-dim); }
+  button.primary:disabled { background: #A9B3AE; cursor: not-allowed; }
+
+  #warning {
+    color: var(--fail);
+    font-size: 0.9rem;
+    margin: -10px 0 18px;
+    display: none;
+  }
+
+  /* ---------- Resultado ---------- */
+  #screen-result { text-align: center; padding-top: 20px; }
+  .stamp {
+    width: 168px;
+    height: 168px;
+    border-radius: 50%;
+    border: 4px solid var(--pass);
+    color: var(--pass);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 10px auto 22px;
+    transform: rotate(-6deg);
+    animation: stamp-in .35s ease-out;
+  }
+  .stamp.fail { border-color: var(--fail); color: var(--fail); }
+  @keyframes stamp-in {
+    from { transform: rotate(-6deg) scale(0.7); opacity: 0; }
+    to   { transform: rotate(-6deg) scale(1); opacity: 1; }
+  }
+  .stamp .estado-txt {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 0.02em;
+  }
+  .stamp .nota-txt {
+    font-size: 0.95rem;
+    margin-top: 4px;
+  }
+  #screen-result .alumno-nombre {
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  #screen-result .detalle {
+    text-align: left;
+    max-width: 480px;
+    margin: 28px auto 0;
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+  #screen-result .detalle-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    padding: 7px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  #screen-result .detalle-item span.ok { color: var(--pass); font-weight: 600; }
+  #screen-result .detalle-item span.no { color: var(--fail); font-weight: 600; }
+  #estado-envio {
+    font-size: 0.85rem;
+    color: #5B6260;
+    margin-top: 24px;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-band">
+  <div class="top-band-inner">
+    <h1>Seguridad e Higiene Alimentaria</h1>
+    <div class="meta">Cuestionario de evaluación · 10 preguntas</div>
+  </div>
+</div>
+
+<div class="stage">
+
+  <!-- PANTALLA 1: IDENTIFICACIÓN -->
+  <div id="screen-id">
+    <p class="lede">Antes de empezar, indica tu nombre y apellidos. Al finalizar el cuestionario verás tu nota y el resultado se enviará automáticamente a la persona formadora.</p>
+
+    <label for="nombre">Nombre y apellidos</label>
+    <input type="text" id="nombre" placeholder="Escribe tu nombre completo">
+    <div id="warning-id">Introduce tu nombre y apellidos antes de continuar.</div>
+
+    <div style="margin-top:24px;">
+      <button class="primary" onclick="empezarExamen()">Comenzar cuestionario</button>
+    </div>
+
+    <div class="rules">
+      Cómo funciona
+      <ul>
+        <li>10 preguntas, cada una con 3 opciones de respuesta.</li>
+        <li>Solo una opción es correcta por pregunta.</li>
+        <li>Debes responder todas las preguntas antes de enviar.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PANTALLA 2: PREGUNTAS -->
+  <form id="screen-exam" class="hidden" onsubmit="return false;">
+    <div class="progress-rail">
+      <div class="count" id="progress-count">0 de 10 respondidas</div>
+      <div class="progress-dots" id="progress-dots"></div>
+    </div>
+
+    <div id="preguntas-container"></div>
+
+    <div id="warning">Responde todas las preguntas antes de enviar el cuestionario.</div>
+    <button type="button" class="primary" id="btn-enviar" onclick="enviarExamen()">Finalizar y enviar</button>
+  </form>
+
+  <!-- PANTALLA 3: RESULTADO -->
+  <div id="screen-result" class="hidden">
+    <p class="alumno-nombre" id="nombre-final"></p>
+    <div class="stamp" id="stamp">
+      <div class="estado-txt" id="estado-final"></div>
+      <div class="nota-txt" id="nota-final"></div>
+    </div>
+    <div class="detalle" id="detalle-final"></div>
+    <p id="estado-envio">Enviando resultado a la persona formadora...</p>
+  </div>
+
+</div>
+
+<script>
+  // ==========================================================
+  // CONFIGURACIÓN
+  // ==========================================================
+  const WEB3FORMS_ACCESS_KEY = "eb6fb0b7-ef27-4bd2-b4b0-a6495dfb2529"; // cuenta info@lerni.es
+  const TITULO_EXAMEN = "Seguridad e Higiene Alimentaria — Cuestionario de evaluación";
+  const NOTA_APROBADO = 5; // sobre 10
+
+  // ==========================================================
+  // PREGUNTAS
+  // ==========================================================
+  const preguntas = [
+    { enunciado: "¿Qué ocurre si no seguimos normas de higiene?",
+      opciones: ["El producto dura más tiempo", "Se pueden producir enfermedades", "Nada, los alimentos son siempre seguros"],
+      correcta: 1 },
+    { enunciado: "Un trozo de plástico en una tarta es un ejemplo de:",
+      opciones: ["Contaminación biológica", "Contaminación química", "Contaminación física"],
+      correcta: 2 },
+    { enunciado: "¿Qué es contaminación cruzada?",
+      opciones: ["Que dos productos se mezclen en el horno", "Que los gérmenes pasen de un alimento u objeto a otro", "Que los alimentos cambien de color por el calor"],
+      correcta: 1 },
+    { enunciado: "¿Qué alimento de pastelería es más sensible a la contaminación?",
+      opciones: ["Harina", "Crema y nata", "Chocolate en tableta"],
+      correcta: 1 },
+    { enunciado: "¿A través de qué se puede contaminar un alimento?",
+      opciones: ["Las manos del manipulador, utensilios, ambiente, agua, materias primas…", "Las manos del manipulador, utensilios, agua, materias primas… pero no del ambiente", "Solamente a través de manos sucias del manipulador"],
+      correcta: 0 },
+    { enunciado: "¿Qué son las enfermedades de transmisión alimentaria?",
+      opciones: ["Las que se transmiten por el aire", "Las que se transmiten por los alimentos", "Las que aparecen sólo en verano"],
+      correcta: 1 },
+    { enunciado: "Las bacterias",
+      opciones: ["Necesitan oxígeno para crecer", "No necesitan oxígeno para crecer", "Algunas necesitan oxígeno para crecer, otras no y otras pueden crecer con o sin oxígeno"],
+      correcta: 2 },
+    { enunciado: "Una intoxicación alimentaria ocurre cuando:",
+      opciones: ["Se ingiere una toxina ya formada en el alimento", "Se ingiere agua en exceso", "El alimento cambia de color"],
+      correcta: 0 },
+    { enunciado: "¿Qué síntoma es muy habitual en una enfermedad alimentaria?",
+      opciones: ["Dolor abdominal", "Aumento del apetito", "Pérdida de cabello"],
+      correcta: 0 },
+    { enunciado: "Una mousse hecha con huevo fresco y mal refrigerada puede causar:",
+      opciones: ["Salmonella", "Clostridium botulinum", "Hepatitis B"],
+      correcta: 0 }
+  ];
+
+  let nombreAlumno = "";
+
+  // ==========================================================
+  // PANTALLA 1 -> 2
+  // ==========================================================
+  function empezarExamen() {
+    const nombre = document.getElementById('nombre').value.trim();
+    if (!nombre) {
+      document.getElementById('warning-id').style.display = 'block';
+      return;
+    }
+    nombreAlumno = nombre;
+
+    const contenedor = document.getElementById('preguntas-container');
+    const dotsContenedor = document.getElementById('progress-dots');
+    contenedor.innerHTML = '';
+    dotsContenedor.innerHTML = '';
+    const letras = ['A', 'B', 'C'];
+
+    preguntas.forEach((p, i) => {
+      const div = document.createElement('div');
+      div.className = 'question';
+      let opcionesHtml = '<div class="options">';
+      p.opciones.forEach((op, j) => {
+        opcionesHtml += `
+          <label>
+            <input type="radio" name="p${i}" value="${j}" onchange="actualizarProgreso()">
+            <span class="box"></span>
+            <span>${op}</span>
+          </label>`;
+      });
+      opcionesHtml += '</div>';
+      div.innerHTML = `<div class="num">${String(i + 1).padStart(2, '0')}</div><div><p class="enunciado">${p.enunciado}</p>${opcionesHtml}</div>`;
+      contenedor.appendChild(div);
+
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      dot.id = `dot-${i}`;
+      dotsContenedor.appendChild(dot);
+    });
+
+    document.getElementById('screen-id').classList.add('hidden');
+    document.getElementById('screen-exam').classList.remove('hidden');
+    window.scrollTo(0, 0);
+  }
+
+  function actualizarProgreso() {
+    let respondidas = 0;
+    preguntas.forEach((p, i) => {
+      const marcado = document.querySelector(`input[name="p${i}"]:checked`);
+      document.getElementById(`dot-${i}`).classList.toggle('done', !!marcado);
+      if (marcado) respondidas++;
+    });
+    document.getElementById('progress-count').textContent = `${respondidas} de ${preguntas.length} respondidas`;
+  }
+
+  // ==========================================================
+  // CORRECCIÓN Y ENVÍO
+  // ==========================================================
+  function enviarExamen() {
+    for (let i = 0; i < preguntas.length; i++) {
+      if (!document.querySelector(`input[name="p${i}"]:checked`)) {
+        document.getElementById('warning').style.display = 'block';
+        document.querySelector(`input[name="p${i}"]`).closest('.question').scrollIntoView({behavior: 'smooth', block: 'center'});
+        return;
+      }
+    }
+    document.getElementById('warning').style.display = 'none';
+    document.getElementById('btn-enviar').disabled = true;
+    document.getElementById('btn-enviar').textContent = 'Corrigiendo...';
+
+    let aciertos = 0;
+    const letras = ['A', 'B', 'C'];
+    let detalleTexto = '';
+    let detalleHtml = '';
+
+    preguntas.forEach((p, i) => {
+      const seleccion = parseInt(document.querySelector(`input[name="p${i}"]:checked`).value);
+      const esCorrecta = seleccion === p.correcta;
+      if (esCorrecta) aciertos++;
+      detalleTexto += `P${i + 1}: ${esCorrecta ? 'Correcta' : 'Incorrecta'} (marcó ${letras[seleccion]}, correcta ${letras[p.correcta]})\n`;
+      detalleHtml += `<div class="detalle-item"><span>Pregunta ${i + 1}</span><span class="${esCorrecta ? 'ok' : 'no'}">${esCorrecta ? 'Correcta' : 'Incorrecta'}</span></div>`;
+    });
+
+    mostrarResultado(aciertos, detalleTexto, detalleHtml);
+    enviarEmail(aciertos, detalleTexto);
+  }
+
+  function mostrarResultado(aciertos, detalleTexto, detalleHtml) {
+    document.getElementById('screen-exam').classList.add('hidden');
+    document.getElementById('screen-result').classList.remove('hidden');
+
+    document.getElementById('nombre-final').textContent = nombreAlumno;
+
+    const aprobado = aciertos >= NOTA_APROBADO;
+    document.getElementById('stamp').classList.toggle('fail', !aprobado);
+    document.getElementById('estado-final').textContent = aprobado ? 'APTO' : 'NO APTO';
+    document.getElementById('nota-final').textContent = `${aciertos}/10`;
+    document.getElementById('detalle-final').innerHTML = detalleHtml;
+
+    window.scrollTo(0, 0);
+  }
+
+  function enviarEmail(aciertos, detalleTexto) {
+    const estadoEnvio = document.getElementById('estado-envio');
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject: `Resultado examen Higiene Alimentaria – ${nombreAlumno} (${aciertos}/10)`,
+        from_name: 'Examen lerni',
+        alumno: nombreAlumno,
+        nota: `${aciertos}/10`,
+        estado: aciertos >= NOTA_APROBADO ? 'APTO' : 'NO APTO',
+        detalle: detalleTexto,
+        examen: TITULO_EXAMEN
+      })
+    })
+    .then(r => r.json())
+    .then(data => {
+      estadoEnvio.textContent = data.success
+        ? 'Resultado enviado correctamente a la persona formadora.'
+        : 'No se ha podido enviar el resultado automáticamente. Haz una captura de esta pantalla y envíasela a la formadora.';
+    })
+    .catch(() => {
+      estadoEnvio.textContent = 'No se ha podido enviar el resultado automáticamente. Haz una captura de esta pantalla y envíasela a la formadora.';
+    });
+  }
+</script>
+
+</body>
+</html>
