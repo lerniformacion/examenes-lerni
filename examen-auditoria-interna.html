@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen Auditoría Interna IFS/BRCGS — lerni</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F5F3EE; --surface: #FFFFFF;
+    --border: #E2DFDA; --border-strong: #C8C4BD;
+    --text: #1A1916; --text-muted: #6B6860; --text-faint: #9B9890;
+    --green: #1D6A4A; --green-bg: #EAF5EE;
+    --red: #A3302D; --red-bg: #FAEEEE;
+    --blue: #1A4A8A; --blue-bg: #EEF4FC;
+    --amber: #7A5010; --amber-bg: #FDF3E0;
+    --radius: 10px; --radius-sm: 6px;
+  }
+  html { font-size: 16px; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem; }
+  .wrapper { max-width: 660px; margin: 0 auto; }
+
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 2.5rem; }
+  .brand-logo { width: 32px; height: 32px; background: var(--text); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: -1px; }
+  .brand-name { font-size: 15px; font-weight: 500; letter-spacing: 0.02em; }
+
+  .exam-tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: var(--text-muted); text-transform: uppercase; background: var(--border); padding: 4px 10px; border-radius: 4px; margin-bottom: 10px; }
+  .exam-title { font-size: 24px; font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 6px; }
+  .exam-subtitle { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 2rem; }
+
+  .progress-wrap { margin-bottom: 2rem; }
+  .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-faint); font-family: 'DM Mono', monospace; margin-bottom: 8px; }
+  .progress-track { height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--text); border-radius: 2px; transition: width 0.4s cubic-bezier(0.4,0,0.2,1); width: 0%; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .datos-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 1rem; }
+  .datos-card h3 { font-size: 14px; font-weight: 500; margin-bottom: 1.25rem; color: var(--text-muted); }
+  .field { margin-bottom: 1rem; }
+  .field:last-child { margin-bottom: 0; }
+  .field label { display: block; font-size: 12px; font-family: 'DM Mono', monospace; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .field input { width: 100%; padding: 10px 14px; font-size: 15px; font-family: 'DM Sans', sans-serif; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); outline: none; transition: border-color 0.15s; }
+  .field input:focus { border-color: var(--text); }
+  .field input::placeholder { color: var(--text-faint); }
+
+  .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 10px; animation: fadeIn 0.25s ease forwards; opacity: 0; }
+  @keyframes fadeIn { to { opacity: 1; } }
+  .question-card.answered { border-color: var(--border-strong); }
+  .question-card.review-correct { border-left: 3px solid var(--green); border-radius: 0 var(--radius) var(--radius) 0; }
+  .question-card.review-incorrect { border-left: 3px solid var(--red); border-radius: 0 var(--radius) var(--radius) 0; }
+
+  .q-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .q-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-faint); }
+  .q-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: background 0.2s; }
+  .q-dot.answered { background: var(--text); }
+  .q-text { font-size: 15px; line-height: 1.6; color: var(--text); margin-bottom: 1.1rem; }
+
+  .options { display: flex; flex-direction: column; gap: 7px; }
+  .opt-btn { padding: 10px 14px; font-size: 14px; font-family: 'DM Sans', sans-serif; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text-muted); cursor: pointer; transition: all 0.15s; text-align: left; display: flex; align-items: flex-start; gap: 10px; }
+  .opt-btn .opt-key { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; color: var(--text); min-width: 16px; margin-top: 1px; }
+  .opt-btn:hover { border-color: var(--border-strong); background: var(--surface); }
+  .opt-btn.selected { background: var(--blue-bg); border-color: var(--blue); color: var(--blue); }
+  .opt-btn.selected .opt-key { color: var(--blue); }
+  .opt-btn:disabled { cursor: default; }
+
+  .feedback-line { display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; font-size: 13px; padding: 10px 14px; border-radius: var(--radius-sm); line-height: 1.5; }
+  .feedback-line.ok { background: var(--green-bg); color: var(--green); }
+  .feedback-line.ko { background: var(--red-bg); color: var(--red); }
+
+  .btn-primary { width: 100%; padding: 14px; font-size: 15px; font-weight: 500; font-family: 'DM Sans', sans-serif; background: var(--text); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; transition: opacity 0.15s, transform 0.1s; margin-top: 1rem; }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-primary:active { transform: scale(0.99); }
+  .btn-primary:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+  .result-hero { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2.5rem 2rem; text-align: center; margin-bottom: 1.5rem; }
+  .result-fraction { font-size: 52px; font-weight: 300; letter-spacing: -0.04em; line-height: 1; margin-bottom: 6px; }
+  .result-fraction .denom { font-size: 28px; color: var(--text-muted); }
+  .result-pct { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text-faint); margin-bottom: 1rem; }
+  .result-verdict { display: inline-block; font-size: 13px; font-weight: 500; padding: 5px 14px; border-radius: 20px; margin-bottom: 1rem; }
+  .verdict-apto { background: var(--green-bg); color: var(--green); }
+  .verdict-revisar { background: var(--amber-bg); color: var(--amber); }
+  .verdict-no-apto { background: var(--red-bg); color: var(--red); }
+  .result-name { font-size: 14px; color: var(--text-muted); }
+
+  .section-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 12px; margin-top: 1.5rem; }
+  .email-status { text-align: center; font-size: 13px; color: var(--text-faint); padding: 1rem 0 0; font-family: 'DM Mono', monospace; }
+
+  @media (max-width: 480px) { .exam-title { font-size: 20px; } .result-fraction { font-size: 42px; } }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="brand">
+    <div class="brand-logo">le</div>
+    <span class="brand-name">lerni</span>
+  </div>
+
+  <!-- DATOS -->
+  <div class="screen active" id="screen-datos">
+    <span class="exam-tag">Evaluación</span>
+    <h1 class="exam-title">Auditoría Interna IFS Food v8 / BRCGS Food v9</h1>
+    <p class="exam-subtitle">30 preguntas de opción múltiple (a, b o c). Selecciona la respuesta correcta en cada caso.</p>
+    <div class="datos-card">
+      <h3>Identifícate para comenzar</h3>
+      <div class="field">
+        <label>Nombre</label>
+        <input type="text" id="inp-nombre" placeholder="Tu nombre" autocomplete="given-name" />
+      </div>
+      <div class="field">
+        <label>Apellidos</label>
+        <input type="text" id="inp-apellidos" placeholder="Tus apellidos" autocomplete="family-name" />
+      </div>
+    </div>
+    <button class="btn-primary" onclick="startExam()">Comenzar examen →</button>
+  </div>
+
+  <!-- EXAMEN -->
+  <div class="screen" id="screen-exam">
+    <span class="exam-tag">Auditoría Interna IFS / BRCGS</span>
+    <h1 class="exam-title" style="margin-bottom:1.5rem">Elige la opción correcta</h1>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="prog-text">0 / 30 respondidas</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+    <div id="questions-container"></div>
+    <button class="btn-primary" id="btn-submit" onclick="submitExam()" disabled>Enviar respuestas</button>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="screen" id="screen-result">
+    <div class="result-hero">
+      <div class="result-fraction" id="res-fraction"></div>
+      <div class="result-pct" id="res-pct"></div>
+      <div class="result-verdict" id="res-verdict"></div>
+      <div class="result-name" id="res-name"></div>
+    </div>
+    <div class="section-label">Revisión detallada</div>
+    <div id="review-container"></div>
+    <div class="email-status" id="email-status">Enviando resultados...</div>
+  </div>
+
+</div>
+<script>
+const W3F_KEY = 'eb6fb0b7-ef27-4bd2-b4b0-a6495dfb2529';
+const DEST_EMAIL = 'info@lerni.es';
+
+const questions = [
+  { text: "¿Cuál es uno de los principales objetivos de una auditoría interna según IFS y BRCGS?", opts: ["Detectar errores de personal", "Comprobar la conformidad del sistema y su eficacia", "Sustituir la auditoría externa"], answer: 1 },
+  { text: "¿Qué diferencia principal existe entre el alcance completo y parcial de una auditoría?", opts: ["El completo abarca todos los procesos, el parcial solo áreas o requisitos concretos", "El parcial es siempre documental", "El completo se realiza solo cada dos años"], answer: 0 },
+  { text: "¿Cuál de los siguientes ejemplos sería una exclusión aceptable en el alcance según IFS y BRCGS Food?", opts: ["Parte del proceso productivo", "Productos elaborados en la misma zona", "Producto claramente diferenciado y fabricado en zona separada"], answer: 2 },
+  { text: "¿Qué tipo de auditoría se realiza por clientes a proveedores?", opts: ["Primera parte", "Segunda parte", "Tercera parte"], answer: 1 },
+  { text: "¿Qué demuestra la auditoría interna ante la Dirección?", opts: ["Que el personal conoce la norma", "Que el sistema es eficaz y cumple los requisitos", "Que la planta está limpia"], answer: 1 },
+  { text: "¿Qué principio debe regir la actuación del auditor interno?", opts: ["Subjetividad", "Imparcialidad", "Compromiso personal"], answer: 1 },
+  { text: "Según IFS, ¿qué implica la objetividad del auditor?", opts: ["Emitir juicios personales", "Basar los hallazgos en hechos verificables", "Adaptar el informe al contexto de la empresa"], answer: 1 },
+  { text: "¿Cuál de las siguientes situaciones sería una falta de imparcialidad?", opts: ["Auditar un área sin relación laboral", "Auditar el propio departamento", "Rotar auditores cada ciclo"], answer: 1 },
+  { text: "En el BRCGS Food v9, el requisito 1.1. se relaciona con:", opts: ["Compromiso de la Gerencia Sénior", "Control de producto", "Gestión de proveedores"], answer: 0 },
+  { text: "En IFS v8, el KO 1 se refiere a:", opts: ["Auditorías internas", "Gobernanza y compromiso", "Control de alérgenos"], answer: 1 },
+  { text: "Una evidencia válida de compromiso de la dirección es:", opts: ["El organigrama actualizado y comunicados de responsabilidades", "Un informe de mantenimiento", "Un plan APPCC"], answer: 0 },
+  { text: "Un ejemplo de no conformidad de compromiso de dirección sería:", opts: ["Personal formado en BPF", "Objetivos de seguridad alimentaria sin seguimiento", "Plan de cultura actualizado"], answer: 1 },
+  { text: "¿Qué elemento no pertenece a los prerrequisitos de higiene?", opts: ["Control de plagas", "Control de agua", "Control de proveedores"], answer: 2 },
+  { text: "Una deficiencia común en instalaciones es:", opts: ["Validación de plan de limpieza", "Falta de análisis de agua en puntos críticos", "Control de EPIs"], answer: 1 },
+  { text: "En BRCGS v9, el plan de defensa alimentaria se regula en la cláusula:", opts: ["4.2", "5.4", "3.1"], answer: 0 },
+  { text: "En IFS v8, el plan de defensa alimentaria debe revisarse:", opts: ["Cada 3 años", "Anualmente o ante cambios", "Solo si ocurre un incidente"], answer: 1 },
+  { text: "¿Qué aspecto no se incluye en la auditoría del plan de defensa?", opts: ["Comprobación de cámaras y cerraduras", "Entrevista al personal sobre denuncias", "Verificación del etiquetado"], answer: 2 },
+  { text: "¿Qué exige la norma sobre formación del personal?", opts: ["Solo formación inicial", "Formación continua y evaluación de eficacia", "Formación opcional según el puesto"], answer: 1 },
+  { text: "¿Qué ejemplo constituye una no conformidad de higiene personal según IFS?", opts: ["Uñas limpias y cortas", "Piercing visible en zona de manipulación", "Lavado frecuente de manos"], answer: 1 },
+  { text: "El plan APPCC debe basarse en:", opts: ["Buenas prácticas de laboratorio", "Los 12 pasos / 7 principios del Codex Alimentarius", "ISO 9001"], answer: 1 },
+  { text: "Un error grave en APPCC sería:", opts: ["Validar límites críticos", "No revisar el plan tras un cambio de proceso", "Revisarlo anualmente"], answer: 1 },
+  { text: "La evaluación de vulnerabilidad al fraude alimentario debe revisarse:", opts: ["Cada 3 años", "Cuando lo exija el cliente", "Al menos una vez al año o ante cambios"], answer: 2 },
+  { text: "En IFS v8, el fraude alimentario se encuentra en la cláusula:", opts: ["4.20", "4.12", "3.5"], answer: 0 },
+  { text: "¿Cuál es un ejemplo de no conformidad en fraude alimentario?", opts: ["Plan actualizado y con responsables definidos", "Evaluación genérica sin criterios de riesgo", "Verificación anual del plan"], answer: 1 },
+  { text: "El programa de auditorías internas según IFS debe cubrir:", opts: ["Solo los procesos críticos", "Todos los requisitos de la norma en un periodo ≤ 12 meses", "Solo los puntos KO"], answer: 1 },
+  { text: "En BRCGS v9, ¿cuántas fechas diferentes de auditoría interna debe incluir el programa anual como mínimo?", opts: ["Dos", "Tres", "Cuatro"], answer: 2 },
+  { text: "¿Cuál de las siguientes afirmaciones es correcta sobre los auditores internos?", opts: ["Pueden auditar su propio trabajo", "Deben ser competentes e independientes", "No es necesaria formación previa"], answer: 1 },
+  { text: "El plazo máximo de envío de evidencias tras una auditoría externa en IFS es:", opts: ["2 semanas", "4 semanas", "8 semanas"], answer: 1 },
+  { text: "¿Qué requisito KO de IFS está relacionado con la trazabilidad?", opts: ["KO 7", "KO 3", "KO 9"], answer: 0 },
+  { text: "¿Cuál es el enfoque recomendado para la auditoría interna en empresas certificadas?", opts: ["Revisar solo documentación", "Simular una auditoría de certificación real", "Realizar observaciones sin informe"], answer: 1 }
+];
+
+const KEYS = ['a', 'b', 'c'];
+let alumno = {};
+let respuestas = {};
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startExam() {
+  const nombre = document.getElementById('inp-nombre').value.trim();
+  const apellidos = document.getElementById('inp-apellidos').value.trim();
+  if (!nombre || !apellidos) { alert('Por favor, introduce tu nombre y apellidos para continuar.'); return; }
+  alumno = { nombre, apellidos, full: nombre + ' ' + apellidos };
+  showScreen('screen-exam');
+  renderQuestions();
+}
+
+function renderQuestions() {
+  const container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'question-card';
+    div.id = 'qcard-' + i;
+    div.style.animationDelay = (i * 0.03) + 's';
+    const optsHtml = q.opts.map((o, j) => `
+      <button class="opt-btn" id="opt-${i}-${j}" onclick="selectAnswer(${i},${j})">
+        <span class="opt-key">${KEYS[j]}</span>${o}
+      </button>`).join('');
+    div.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">${String(i+1).padStart(2,'0')}</span>
+        <span class="q-dot" id="dot-${i}"></span>
+      </div>
+      <div class="q-text">${q.text}</div>
+      <div class="options">${optsHtml}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function selectAnswer(i, val) {
+  respuestas[i] = val;
+  questions[0].opts.forEach((_, j) => {
+    const btn = document.getElementById('opt-' + i + '-' + j);
+    if (btn) btn.className = 'opt-btn' + (j === val ? ' selected' : '');
+  });
+  // reset all opts for this question
+  for (let j = 0; j < 3; j++) {
+    const btn = document.getElementById('opt-' + i + '-' + j);
+    if (btn) btn.className = 'opt-btn' + (j === val ? ' selected' : '');
+  }
+  document.getElementById('dot-' + i).classList.add('answered');
+  document.getElementById('qcard-' + i).classList.add('answered');
+  const answered = Object.keys(respuestas).length;
+  const pct = Math.round(answered / questions.length * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('prog-text').textContent = answered + ' / ' + questions.length + ' respondidas';
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('btn-submit').disabled = answered < questions.length;
+}
+
+function submitExam() {
+  let correctas = 0;
+  const detalleLines = [];
+  questions.forEach((q, i) => {
+    const r = respuestas[i];
+    const ok = r === q.answer;
+    if (ok) correctas++;
+    detalleLines.push('P' + (i+1) + ': Respondida ' + KEYS[r] + ' → ' + (ok ? 'Correcta ✓' : 'Incorrecta ✗ (correcta: ' + KEYS[q.answer] + ')'));
+  });
+  const pct = Math.round(correctas / questions.length * 100);
+  document.getElementById('res-fraction').innerHTML = correctas + '<span class="denom">/' + questions.length + '</span>';
+  document.getElementById('res-pct').textContent = pct + '% de aciertos';
+  document.getElementById('res-name').textContent = alumno.full;
+  const verdictEl = document.getElementById('res-verdict');
+  if (pct >= 80) { verdictEl.textContent = 'Apto'; verdictEl.className = 'result-verdict verdict-apto'; }
+  else if (pct >= 60) { verdictEl.textContent = 'Revisar conceptos'; verdictEl.className = 'result-verdict verdict-revisar'; }
+  else { verdictEl.textContent = 'No apto — requiere refuerzo'; verdictEl.className = 'result-verdict verdict-no-apto'; }
+  showScreen('screen-result');
+  renderReview();
+  sendEmail(correctas, pct, detalleLines.join('\n'));
+}
+
+function renderReview() {
+  const container = document.getElementById('review-container');
+  container.innerHTML = '';
+  questions.forEach((q, i) => {
+    const r = respuestas[i];
+    const ok = r === q.answer;
+    const div = document.createElement('div');
+    div.className = 'question-card ' + (ok ? 'review-correct' : 'review-incorrect');
+    div.innerHTML = `
+      <div class="q-meta"><span class="q-num">${String(i+1).padStart(2,'0')}</span></div>
+      <div class="q-text">${q.text}</div>
+      <div class="feedback-line ${ok ? 'ok' : 'ko'}">
+        ${ok
+          ? '✓ Correcto — <strong>' + KEYS[r] + ') ' + q.opts[r] + '</strong>'
+          : '✗ Incorrecto — Respondiste: <strong>' + KEYS[r] + ')</strong> · Correcta: <strong>' + KEYS[q.answer] + ') ' + q.opts[q.answer] + '</strong>'
+        }
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+async function sendEmail(correctas, pct, detalle) {
+  const statusEl = document.getElementById('email-status');
+  const fecha = new Date().toLocaleString('es-ES', { dateStyle: 'long', timeStyle: 'short' });
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: W3F_KEY,
+        subject: 'Resultado examen Auditoría Interna: ' + alumno.full + ' — ' + fecha,
+        from_name: 'lerni Exámenes',
+        alumno: alumno.full,
+        fecha: fecha,
+        puntuacion: correctas + '/' + questions.length + ' (' + pct + '%)',
+        detalle: detalle,
+        botcheck: ''
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      statusEl.textContent = '✓ Resultados enviados a ' + DEST_EMAIL;
+    } else {
+      statusEl.textContent = 'Error al enviar (' + (data.message || 'desconocido') + '). Anota el resultado manualmente.';
+    }
+  } catch(err) {
+    statusEl.textContent = 'Error de conexión. Anota el resultado manualmente.';
+    console.error(err);
+  }
+}
+</script>
+</body>
+</html>
