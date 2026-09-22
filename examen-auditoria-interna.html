@@ -103,7 +103,7 @@
   <div class="screen active" id="screen-datos">
     <span class="exam-tag">Evaluación</span>
     <h1 class="exam-title">Auditoría Interna IFS Food v8 / BRCGS Food v9</h1>
-    <p class="exam-subtitle">30 preguntas de opción múltiple (a, b o c). Selecciona la respuesta correcta en cada caso.</p>
+    <p class="exam-subtitle">10 preguntas de opción múltiple (a, b o c). Selecciona la respuesta correcta en cada caso.</p>
     <div class="datos-card">
       <h3>Identifícate para comenzar</h3>
       <div class="field">
@@ -124,7 +124,7 @@
     <h1 class="exam-title" style="margin-bottom:1.5rem">Elige la opción correcta</h1>
     <div class="progress-wrap">
       <div class="progress-meta">
-        <span id="prog-text">0 / 30 respondidas</span>
+        <span id="prog-text">0 / 10 respondidas</span>
         <span id="prog-pct">0%</span>
       </div>
       <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
@@ -152,36 +152,16 @@ const W3F_KEY = 'eb6fb0b7-ef27-4bd2-b4b0-a6495dfb2529';
 const DEST_EMAIL = 'info@lerni.es';
 
 const questions = [
-  { text: "¿Cuál es uno de los principales objetivos de una auditoría interna según IFS y BRCGS?", opts: ["Detectar errores de personal", "Comprobar la conformidad del sistema y su eficacia", "Sustituir la auditoría externa"], answer: 1 },
-  { text: "¿Qué diferencia principal existe entre el alcance completo y parcial de una auditoría?", opts: ["El completo abarca todos los procesos, el parcial solo áreas o requisitos concretos", "El parcial es siempre documental", "El completo se realiza solo cada dos años"], answer: 0 },
   { text: "¿Cuál de los siguientes ejemplos sería una exclusión aceptable en el alcance según IFS y BRCGS Food?", opts: ["Parte del proceso productivo", "Productos elaborados en la misma zona", "Producto claramente diferenciado y fabricado en zona separada"], answer: 2 },
-  { text: "¿Qué tipo de auditoría se realiza por clientes a proveedores?", opts: ["Primera parte", "Segunda parte", "Tercera parte"], answer: 1 },
-  { text: "¿Qué demuestra la auditoría interna ante la Dirección?", opts: ["Que el personal conoce la norma", "Que el sistema es eficaz y cumple los requisitos", "Que la planta está limpia"], answer: 1 },
   { text: "¿Qué principio debe regir la actuación del auditor interno?", opts: ["Subjetividad", "Imparcialidad", "Compromiso personal"], answer: 1 },
-  { text: "Según IFS, ¿qué implica la objetividad del auditor?", opts: ["Emitir juicios personales", "Basar los hallazgos en hechos verificables", "Adaptar el informe al contexto de la empresa"], answer: 1 },
-  { text: "¿Cuál de las siguientes situaciones sería una falta de imparcialidad?", opts: ["Auditar un área sin relación laboral", "Auditar el propio departamento", "Rotar auditores cada ciclo"], answer: 1 },
-  { text: "En el BRCGS Food v9, el requisito 1.1. se relaciona con:", opts: ["Compromiso de la Gerencia Sénior", "Control de producto", "Gestión de proveedores"], answer: 0 },
-  { text: "En IFS v8, el KO 1 se refiere a:", opts: ["Auditorías internas", "Gobernanza y compromiso", "Control de alérgenos"], answer: 1 },
-  { text: "Una evidencia válida de compromiso de la dirección es:", opts: ["El organigrama actualizado y comunicados de responsabilidades", "Un informe de mantenimiento", "Un plan APPCC"], answer: 0 },
-  { text: "Un ejemplo de no conformidad de compromiso de dirección sería:", opts: ["Personal formado en BPF", "Objetivos de seguridad alimentaria sin seguimiento", "Plan de cultura actualizado"], answer: 1 },
-  { text: "¿Qué elemento no pertenece a los prerrequisitos de higiene?", opts: ["Control de plagas", "Control de agua", "Control de proveedores"], answer: 2 },
-  { text: "Una deficiencia común en instalaciones es:", opts: ["Validación de plan de limpieza", "Falta de análisis de agua en puntos críticos", "Control de EPIs"], answer: 1 },
-  { text: "En BRCGS v9, el plan de defensa alimentaria se regula en la cláusula:", opts: ["4.2", "5.4", "3.1"], answer: 0 },
-  { text: "En IFS v8, el plan de defensa alimentaria debe revisarse:", opts: ["Cada 3 años", "Anualmente o ante cambios", "Solo si ocurre un incidente"], answer: 1 },
-  { text: "¿Qué aspecto no se incluye en la auditoría del plan de defensa?", opts: ["Comprobación de cámaras y cerraduras", "Entrevista al personal sobre denuncias", "Verificación del etiquetado"], answer: 2 },
-  { text: "¿Qué exige la norma sobre formación del personal?", opts: ["Solo formación inicial", "Formación continua y evaluación de eficacia", "Formación opcional según el puesto"], answer: 1 },
-  { text: "¿Qué ejemplo constituye una no conformidad de higiene personal según IFS?", opts: ["Uñas limpias y cortas", "Piercing visible en zona de manipulación", "Lavado frecuente de manos"], answer: 1 },
-  { text: "El plan APPCC debe basarse en:", opts: ["Buenas prácticas de laboratorio", "Los 12 pasos / 7 principios del Codex Alimentarius", "ISO 9001"], answer: 1 },
-  { text: "Un error grave en APPCC sería:", opts: ["Validar límites críticos", "No revisar el plan tras un cambio de proceso", "Revisarlo anualmente"], answer: 1 },
-  { text: "La evaluación de vulnerabilidad al fraude alimentario debe revisarse:", opts: ["Cada 3 años", "Cuando lo exija el cliente", "Al menos una vez al año o ante cambios"], answer: 2 },
-  { text: "En IFS v8, el fraude alimentario se encuentra en la cláusula:", opts: ["4.20", "4.12", "3.5"], answer: 0 },
-  { text: "¿Cuál es un ejemplo de no conformidad en fraude alimentario?", opts: ["Plan actualizado y con responsables definidos", "Evaluación genérica sin criterios de riesgo", "Verificación anual del plan"], answer: 1 },
-  { text: "El programa de auditorías internas según IFS debe cubrir:", opts: ["Solo los procesos críticos", "Todos los requisitos de la norma en un periodo ≤ 12 meses", "Solo los puntos KO"], answer: 1 },
+  { text: "El plan de defensa alimentaria debe revisarse:", opts: ["Cada 3 años", "Anualmente o ante cambios", "Solo si ocurre un incidente"], answer: 1 },
+  { text: "Tienen una motivación principalmente intencional los incidentes de:", opts: ["Fraude y defensa alimentaria", "Calidad e inocuidad", "Todos los anteriores"], answer: 0 },
+  { text: "¿Cuál es uno de los principales objetivos de una auditoría interna según IFS y BRCGS?", opts: ["Detectar errores de personal", "Comprobar la conformidad del sistema y su eficacia", "Sustituir la auditoría externa"], answer: 1 },
   { text: "En BRCGS v9, ¿cuántas fechas diferentes de auditoría interna debe incluir el programa anual como mínimo?", opts: ["Dos", "Tres", "Cuatro"], answer: 2 },
-  { text: "¿Cuál de las siguientes afirmaciones es correcta sobre los auditores internos?", opts: ["Pueden auditar su propio trabajo", "Deben ser competentes e independientes", "No es necesaria formación previa"], answer: 1 },
-  { text: "El plazo máximo de envío de evidencias tras una auditoría externa en IFS es:", opts: ["2 semanas", "4 semanas", "8 semanas"], answer: 1 },
-  { text: "¿Qué requisito KO de IFS está relacionado con la trazabilidad?", opts: ["KO 7", "KO 3", "KO 9"], answer: 0 },
-  { text: "¿Cuál es el enfoque recomendado para la auditoría interna en empresas certificadas?", opts: ["Revisar solo documentación", "Simular una auditoría de certificación real", "Realizar observaciones sin informe"], answer: 1 }
+  { text: "Las entrevistas en una auditoría interna:", opts: ["Deben utilizar un lenguaje entendible y reformular la pregunta en caso de duda", "Debe ser un interrogatorio para desestabilizar al entrevistado y detectar si miente", "Ninguna es correcta"], answer: 0 },
+  { text: "La auditoría interna:", opts: ["Es un requisito KO en IFS Food", "Es un requisito fundamental en BRCGS Food", "Ambas son correctas"], answer: 2 },
+  { text: "Las no conformidades o desviaciones:", opts: ["Pueden basarse en oportunidades de mejora que sugiere el personal auditor", "Deben estar basados en evidencias objetivas", "Pueden basarse en sospechas del personal auditor"], answer: 1 },
+  { text: "Ejemplos de evidencias aceptables como correcciones:", opts: ["Registros de formación", "Fotos sólo del antes de la corrección", "Presupuesto de una reparación"], answer: 0 }
 ];
 
 const KEYS = ['a', 'b', 'c'];
